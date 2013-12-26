@@ -27,11 +27,8 @@ module Importer
     end
 
     def import_strings(receiver)
-      output = nil
-      Thread.start do
-        $SAFE  = 4
-        output = eval(file.contents)
-      end.join
+      sandbox = Shikashi::Sandbox.new
+      output  = sandbox.run(file.contents, timeout: 2)
 
       locale = locale_to_use(receiver.locale).rfc5646
 

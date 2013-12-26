@@ -38,10 +38,8 @@ module Exporter
     def self.request_format() :rb end
 
     def self.valid?(contents)
-      value = Thread.start do
-        $SAFE  = 4
-        eval contents
-      end.value
+      sandbox = Shikashi::Sandbox.new
+      value   = sandbox.run(contents, timeout: 2)
       value.kind_of?(Hash)
     rescue Object
       return false
