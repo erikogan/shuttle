@@ -31,7 +31,9 @@ Shuttle::Application.routes.draw do
         get :manifest, :localize
       end
 
-      resources :keys, only: [:index, :show], controller: 'commit/keys'
+      resources :keys, only: [:index, :show], controller: 'commit/keys' do
+        resources :translations, controller: 'incontext/translations', only: [:show, :edit]
+      end
     end
 
     resources :keys, only: [] do

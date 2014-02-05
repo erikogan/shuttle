@@ -1,0 +1,30 @@
+doctype html
+html lang="en"
+  head
+    script src="http://code.jquery.com/jquery-1.10.1.min.js"
+
+    sass:
+      input.success
+        background-color: #dfd
+      input.error
+        background-color: #fdd
+
+  body
+    = form_for([@project, @key, @translation]) do |f|
+      = f.text_area :copy, placeholder: @translation.source_copy
+
+    coffee:
+      form = $('form.edit_translation')
+      copy_field = $('#translation_copy')
+
+      copy_field.change (e) ->
+        copy_field.attr 'disabled', 'disabled'
+        $.ajax form.attr('action'),
+          type: form.attr('method')
+          data: form.serialize()
+          complete: ->
+            copy_field.removeAttr 'disabled'
+          success: ->
+            copy_field.removeClass('error').addClass 'success'
+          error: ->
+            copy_field.removeClass('success').addClass 'error'
